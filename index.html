@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="et">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-192.svg" />
+    <title>Shift Calculator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="header">
+        <div class="header-row">
+          <button class="hamburger" id="hamburgerBtn" type="button" aria-label="Menu">&#9776;</button>
+          <div>
+            <p class="eyebrow" data-i18n="appName">Shift Calculator</p>
+            <h1 data-i18n="tagline">Track your hours and pay.</h1>
+          </div>
+        </div>
+      </header>
+
+      <div class="sidebar-wrapper">
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+        <nav class="sidebar" aria-label="Main menu">
+          <button class="tab-item active" type="button" data-tab="calculator">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+            <span data-i18n="calculatorTab">Calculator</span>
+          </button>
+          <button class="tab-item" type="button" data-tab="log">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
+            <span data-i18n="logTab">Shift log</span>
+          </button>
+          <button class="tab-item" type="button" data-tab="schedule">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span data-i18n="scheduleTab">Work schedule</span>
+          </button>
+          <button class="tab-item" type="button" data-tab="stats">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span data-i18n="statsTab">Statistics</span>
+          </button>
+          <button class="tab-item" type="button" data-tab="about">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span data-i18n="aboutTab">About</span>
+          </button>
+          <button class="tab-item" type="button" data-tab="settings">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <span data-i18n="settingsTab">Settings</span>
+          </button>
+        </nav>
+
+        <div class="app-content">
+        <section class="tab-panel active" id="calculatorPanel" data-panel="calculator">
+          <section class="summary-grid" aria-label="Totals">
+            <article class="summary-card">
+              <span data-i18n="totalHours">Total hours</span>
+              <strong id="totalHours">0h 00m</strong>
+            </article>
+            <article class="summary-card">
+              <span data-i18n="totalPay">Total pay</span>
+              <strong id="totalPay">&euro;0.00</strong>
+            </article>
+            <article class="summary-card">
+              <span data-i18n="shifts">Shifts</span>
+              <strong id="shiftCount">0</strong>
+            </article>
+          </section>
+
+          <section class="content-grid">
+            <form class="panel shift-form" id="shiftForm">
+              <div class="panel-heading">
+                <h2 data-i18n="addShift">Add shift</h2>
+                <p data-i18n="addShiftDesc">Enter your start, end, break, and hourly rate.</p>
+              </div>
+
+              <label>
+                <span data-i18n="date">Date</span>
+                <input id="shiftDate" type="date" required />
+              </label>
+
+              <label>
+                <span data-i18n="position">Position</span>
+                <input id="shiftPosition" type="text" placeholder="e.g. Operator" />
+              </label>
+
+              <div class="field-row">
+                <label>
+                  <span data-i18n="startTime">Start time</span>
+                  <input id="startTime" type="time" required />
+                </label>
+                <label>
+                  <span data-i18n="endTime">End time</span>
+                  <input id="endTime" type="time" required />
+                </label>
+              </div>
+
+              <div class="field-row">
+                <label>
+                  <span data-i18n="breakMinutes">Break minutes</span>
+                  <input id="breakMinutes" type="number" min="0" step="1" value="0" />
+                </label>
+                <label>
+                  <span data-i18n="hourlyPay">Hourly pay</span>
+                  <input id="hourlyPay" type="number" min="0" step="0.01" placeholder="15.00" required />
+                </label>
+              </div>
+
+              <div class="live-result" aria-live="polite">
+                <div>
+                  <span data-i18n="thisShift">This shift</span>
+                  <strong id="previewHours">0h 00m</strong>
+                </div>
+                <div>
+                  <span data-i18n="pay">Pay</span>
+                  <strong id="previewPay">&euro;0.00</strong>
+                  <span class="breakdown" id="previewBreakdown"></span>
+                </div>
+              </div>
+
+              <button class="primary-button" type="submit" data-i18n="addShiftBtn">Add shift</button>
+              <p class="form-note" id="formNote" data-i18n="formNoteDefault">Overnight shifts are calculated automatically.</p>
+            </form>
+          </section>
+        </section>
+
+        <section class="tab-panel" id="logPanel" data-panel="log">
+          <section class="panel history-panel">
+            <div class="panel-heading row-heading">
+              <div>
+                <h2 data-i18n="shiftLog">Shift log</h2>
+                <p data-i18n="shiftLogDesc">Your entries are saved in this browser.</p>
+              </div>
+              <div class="row-actions">
+                <button class="text-button" id="exportButton" type="button" data-i18n="exportCSV">Export CSV</button>
+                <button class="text-button" id="clearButton" type="button" data-i18n="clear">Clear</button>
+              </div>
+            </div>
+
+            <div class="empty-state" id="emptyState">
+              <strong data-i18n="noShifts">No shifts yet</strong>
+              <span data-i18n="noShiftsDesc">Add your first shift to see hours and pay here.</span>
+            </div>
+
+            <div class="shift-list" id="shiftList" data-i18n-aria="savedShifts"></div>
+          </section>
+        </section>
+
+        <section class="tab-panel" id="schedulePanel" data-panel="schedule">
+          <section class="panel schedule-panel">
+            <div class="panel-heading">
+              <h2 data-i18n="scheduleTab">Work schedule</h2>
+              <p data-i18n="scheduleDesc">Mark your working days on the calendar.</p>
+            </div>
+            <div class="calendar" id="calendar">
+              <div class="cal-header">
+                <button class="cal-nav" id="calPrev" type="button">&lsaquo;</button>
+                <strong class="cal-month-year" id="calMonthYear">June 2026</strong>
+                <button class="cal-nav" id="calNext" type="button">&rsaquo;</button>
+              </div>
+              <div class="cal-weekdays" id="calWeekdays" role="row"></div>
+              <div class="cal-grid" id="calGrid" role="grid"></div>
+            </div>
+            <div class="cal-legend">
+              <span><span class="cal-dot cal-dot-today"></span> <span data-i18n="todayLabel">Today</span></span>
+              <span><span class="cal-dot cal-dot-working"></span> <span data-i18n="workingDayLabel">Working day</span></span>
+              <span><span class="cal-dot cal-dot-has-shifts"></span> <span data-i18n="hasShiftsLabel">Has shifts</span></span>
+            </div>
+            <div class="cal-day-detail" id="calDayDetail" hidden>
+              <div class="panel-heading">
+                <strong data-i18n="dayShifts">Shifts on this day</strong>
+                <span class="day-shift-summary" id="dayShiftSummary"></span>
+              </div>
+              <div class="day-shift-list" id="dayShiftList"></div>
+              <div class="empty-state" id="dayShiftEmpty">
+                <span data-i18n="noDayShifts">No shifts on this day.</span>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section class="tab-panel" id="statsPanel" data-panel="stats">
+          <section class="panel stats-panel">
+            <div class="panel-heading">
+              <h2 data-i18n="statsTab">Statistics</h2>
+              <p data-i18n="statsDesc">Breakdown of your shifts and earnings.</p>
+            </div>
+            <div class="stats-grid" id="statsGrid"></div>
+            <div class="empty-state" id="statsEmpty">
+              <span data-i18n="noShiftsDesc">Add your first shift to see hours and pay here.</span>
+            </div>
+          </section>
+        </section>
+
+        <section class="tab-panel" id="aboutPanel" data-panel="about">
+          <section class="panel settings-panel">
+            <div class="panel-heading">
+              <h2 data-i18n="aboutTab">About</h2>
+              <p data-i18n="aboutDesc">About this app.</p>
+            </div>
+            <div class="about-card">
+              <strong class="about-app-name" data-i18n="appName">Shift Calculator</strong>
+              <span class="about-version" data-i18n="appVersion">Version 1.0 Beta</span>
+              <div class="about-divider"></div>
+              <span class="about-label" data-i18n="creator">Creator</span>
+              <strong class="about-creator">Henri-Andreas Auri</strong>
+            </div>
+          </section>
+        </section>
+
+        <section class="tab-panel" id="settingsPanel" data-panel="settings">
+          <section class="panel settings-panel">
+            <div class="panel-heading">
+              <h2 data-i18n="settings">Settings</h2>
+              <p data-i18n="settingsDesc">Choose how the app looks and behaves.</p>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <strong data-i18n="appearance">Appearance</strong>
+                <span data-i18n="appearanceDesc">Choose dark, white, or follow your system.</span>
+              </div>
+              <div class="theme-picker" role="radiogroup">
+                <button class="theme-btn active" id="themeDark" type="button" role="radio" aria-checked="true" data-theme="dark">Dark</button>
+                <button class="theme-btn" id="themeSystem" type="button" role="radio" aria-checked="false" data-theme="system">System</button>
+                <button class="theme-btn" id="themeWhite" type="button" role="radio" aria-checked="false" data-theme="white">White</button>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <strong data-i18n="language">Language</strong>
+                <span data-i18n="languageDesc">Choose your preferred language.</span>
+              </div>
+              <div class="lang-picker" role="radiogroup">
+                <button class="lang-btn" id="langEn" type="button" role="radio" aria-checked="false">EN</button>
+                <button class="lang-btn active" id="langEt" type="button" role="radio" aria-checked="true">ET</button>
+              </div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>navigator.serviceWorker?.register("sw.js");</script>
+  </body>
+</html>
