@@ -2,7 +2,7 @@
   "name": "Shift Calculator",
   "short_name": "Shifts",
   "description": "Track your work hours and pay.",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#007AFF",
